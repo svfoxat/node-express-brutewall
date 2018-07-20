@@ -1,5 +1,5 @@
 {
-  "name": "node-express-brutewall",
+  "name": "express-brutewall",
   "version": "1.0.0",
   "description": "a easy to use rate limiter for express apps",
   "main": "./lib/index.js",

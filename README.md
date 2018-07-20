@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
-** Easy to use rate limiter for Express.js Apps with Redis
+Easy to use rate limiter for Express.js Apps with Redis
 
 # Features
 * **Redis as storage service**
