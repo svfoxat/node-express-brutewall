@@ -16,7 +16,7 @@ const onDelay = (req) => {
 
 // init brutewall
 const brutewall = require('../src/index')({
-  limiterName: 'global',
+  limiterName: 'global', // optional
   requestCount: 2, // requests per timeFrame
   timeFrame: 10 * 60, // 10 * 60 seconds
   delayAfter: 1,
