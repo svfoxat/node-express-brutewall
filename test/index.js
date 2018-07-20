@@ -4,7 +4,7 @@ let bluebird = require('bluebird');
 let httpMocks = require('node-mocks-http');
 bluebird.promisifyAll(redis.RedisClient.prototype);
 bluebird.promisifyAll(redis.Multi.prototype);
-let redisClient = redis.createClient(6379, '172.17.0.2');
+let redisClient = redis.createClient(6379, 'localhost');
 
 describe('Basic', () => {
   it('should return a middleware function after passing (valid) options and db', () => {
