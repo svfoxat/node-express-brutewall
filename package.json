@@ -1,0 +1,63 @@
+{
+  "name": "node-express-brutewall",
+  "version": "1.0.0",
+  "description": "a easy to use rate limiter for express apps",
+  "main": "./lib/index.js",
+  "scripts": {
+    "clean": "rimraf lib",
+    "test": "npm run lint && npm run cover",
+    "test:prod": "cross-env BABEL_ENV=production npm run test",
+    "test:only": "mocha --exit --require babel-core/register --require babel-polyfill --recursive",
+    "test:watch": "npm test -- --watch",
+    "test:examples": "node examples/",
+    "cover": "istanbul cover _mocha -- --exit --require babel-core/register --require babel-polyfill --recursive",
+    "lint": "eslint src test",
+    "build": "cross-env BABEL_ENV=production babel src --out-dir lib",
+    "prepublish": "npm run clean && npm run lint && npm run test && npm run build"
+  },
+  "files": [
+    "lib",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/svfoxat/node-express-brutewall"
+  },
+  "keywords": [
+    "rate limiter",
+    "node",
+    "express",
+    "rate",
+    "limiter",
+    "bruteforce"
+  ],
+  "author": "Nico Nößler <nico@crux.at>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/svfoxat/node-express-brutewall/issues"
+  },
+  "homepage": "https://github.com/svfoxat/node-express-brutewall#readme",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.1",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-minify": "^0.3.0",
+    "bluebird": "^3.5.1",
+    "chai": "^4.1.2",
+    "cross-env": "^5.1.3",
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-jsx-a11y": "^6.0.2",
+    "eslint-plugin-react": "^7.4.0",
+    "express": "^4.16.3",
+    "istanbul": "^1.0.0-alpha",
+    "mocha": "^5.0.0",
+    "node-mocks-http": "^1.7.0",
+    "redis": "^2.8.0",
+    "rimraf": "^2.6.2"
+  },
+  "dependencies": {}
+}
