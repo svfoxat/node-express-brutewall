@@ -17,8 +17,7 @@
 `npm i express-brutewall`
 
 # Usage
-`
-const express = require('express');
+`const express = require('express');
 const redis = require('redis');
 const bluebird = require('bluebird');
 
@@ -62,8 +61,7 @@ app.listen(3001, () => {
 // define a test route
 app.get('/', (req, res) => {
   res.send('Hello World!');
-});
-`
+});`
 
 # Commands
 - `npm run clean` - Remove `lib/` directory
