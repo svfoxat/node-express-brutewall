@@ -1,10 +1,9 @@
 import { assert } from 'chai';
 let redis = require('redis');
-let bluebird = require('bluebird');
 let httpMocks = require('node-mocks-http');
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-let redisClient = redis.createClient(6379, 'localhost');
+const util = require('util');
+let redisClient = redis.createClient(6379, '172.17.0.3'); // localhost is for travis, edit as you like for local testing
+const flushRedisAsync = util.promisify(redisClient.flushall).bind(redisClient);
 
 describe('Basic', () => {
   it('should return a middleware function after passing (valid) options and db', () => {
@@ -35,7 +34,7 @@ describe('Basic', () => {
 
 describe('Limiter Tests', () => {
   beforeEach(async () => {
-    await redisClient.flushallAsync();
+    await flushRedisAsync();
   });
 
 

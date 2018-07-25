@@ -1,10 +1,7 @@
 const express = require('express');
 const redis = require('redis');
-const bluebird = require('bluebird');
 
-bluebird.promisifyAll(redis.RedisClient.prototype);
-bluebird.promisifyAll(redis.Multi.prototype);
-const redisClient = redis.createClient(6379, '172.17.0.2');
+const redisClient = redis.createClient(6379, '172.17.0.3');
 const app = express();
 
 const onLimit = (req) => {

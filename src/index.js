@@ -1,16 +1,23 @@
+const util = require('util');
+
 module.exports = (options, db) => {
   if (!options || !options.timeFrame || !options.requestCount) { return 'ERR_INVALID_PARAMS_OPTS'; }
   if (!db || !db.get || !db.set || !db.ttl || !db.decr) { return 'ERR_INVALID_PARAMS_REDIS'; }
+
+  const getAsync = util.promisify(db.get).bind(db);
+  const setAsync = util.promisify(db.set).bind(db);
+  const ttlAsync = util.promisify(db.ttl).bind(db);
+  const decrAsync = util.promisify(db.decr).bind(db);
   // default options
   const opts = {
     limiterName: options.limiterName || '', // tested
     requestCount: options.requestCount, // tested
     timeFrame: options.timeFrame, // tested
-    delayAfter: options.delayAfter,
-    delayTimeMs: options.delayTimeMs,
+    delayAfter: options.delayAfter, // tested
+    delayTimeMs: options.delayTimeMs, // tested
     header: options.header, // tested
     limitCallback: options.limitCallback, // tested
-    delayCallback: options.delayCallback,
+    delayCallback: options.delayCallback, // tested
     limitResponseCode: options.limitResponseCode || 429, // tested
     limitMessage: options.limitMessage || 'Too Many Requests', // tested
     limitMethods: options.limitMethods // tested
@@ -27,13 +34,13 @@ module.exports = (options, db) => {
       next();
     } else {
       try {
-        let remainingRequests = await db.getAsync(`rate:${opts.limiterName}:${lookup}`);
+        let remainingRequests = await getAsync(`rate:${opts.limiterName}:${lookup}`);
         if (remainingRequests) {
           if ((remainingRequests - 1) >= 0) {
-            remainingRequests = await db.decrAsync(`rate:${opts.limiterName}:${lookup}`);
+            remainingRequests = await decrAsync(`rate:${opts.limiterName}:${lookup}`);
           }
         } else {
-          const ret = await db.setAsync(`rate:${opts.limiterName}:${lookup}`, opts.requestCount, 'EX', opts.timeFrame);
+          const ret = await setAsync(`rate:${opts.limiterName}:${lookup}`, opts.requestCount, 'EX', opts.timeFrame);
           if (!ret) {
             res.sendStatus(500);
           }
@@ -55,7 +62,7 @@ module.exports = (options, db) => {
           } else next();
         } else {
           if (opts.limitCallback && typeof opts.limitCallback === 'function') {
-            const secondsToReset = await db.ttlAsync(`rate:${opts.limiterName}:${lookup}`);
+            const secondsToReset = await ttlAsync(`rate:${opts.limiterName}:${lookup}`);
             opts.limitCallback(req, res, next, secondsToReset);
           }
           res.status(opts.limitResponseCode).send(opts.limitMessage);
