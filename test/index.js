@@ -1,9 +1,9 @@
 import { assert } from 'chai';
 let redis = require('redis');
 let httpMocks = require('node-mocks-http');
-const util = require('util');
-let redisClient = redis.createClient(6379, '172.17.0.3'); // localhost is for travis, edit as you like for local testing
-const flushRedisAsync = util.promisify(redisClient.flushall).bind(redisClient);
+const promisify = require('util.promisify');
+let redisClient = redis.createClient(process.env.REDIS_URI); // localhost is for travis, edit as you like for local testing
+const flushRedisAsync = promisify(redisClient.flushall).bind(redisClient);
 
 describe('Basic', () => {
   it('should return a middleware function after passing (valid) options and db', () => {

@@ -1,13 +1,13 @@
-const util = require('util');
+const promisify = require('util.promisify');
 
 module.exports = (options, db) => {
   if (!options || !options.timeFrame || !options.requestCount) { return 'ERR_INVALID_PARAMS_OPTS'; }
   if (!db || !db.get || !db.set || !db.ttl || !db.decr) { return 'ERR_INVALID_PARAMS_REDIS'; }
 
-  const getAsync = util.promisify(db.get).bind(db);
-  const setAsync = util.promisify(db.set).bind(db);
-  const ttlAsync = util.promisify(db.ttl).bind(db);
-  const decrAsync = util.promisify(db.decr).bind(db);
+  const getAsync = promisify(db.get).bind(db);
+  const setAsync = promisify(db.set).bind(db);
+  const ttlAsync = promisify(db.ttl).bind(db);
+  const decrAsync = promisify(db.decr).bind(db);
   // default options
   const opts = {
     limiterName: options.limiterName || '', // tested

@@ -1,7 +1,7 @@
 const express = require('express');
 const redis = require('redis');
 
-const redisClient = redis.createClient(6379, '172.17.0.3');
+const redisClient = redis.createClient(6379, 'localhost');
 const app = express();
 
 const onLimit = (req) => {
