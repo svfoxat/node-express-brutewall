@@ -12,7 +12,7 @@ const onDelay = (req) => {
 };
 
 // init brutewall
-const brutewall = require('../src/index')({
+const brutewall = require('express-brutewall')({
   limiterName: 'global', // optional
   requestCount: 2, // requests per timeFrame
   timeFrame: 10 * 60, // 10 * 60 seconds

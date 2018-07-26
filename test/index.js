@@ -4,6 +4,7 @@ let httpMocks = require('node-mocks-http');
 const promisify = require('util.promisify');
 let redisClient = redis.createClient(process.env.REDIS_URI); // localhost is for travis, edit as you like for local testing
 const flushRedisAsync = promisify(redisClient.flushall).bind(redisClient);
+const shutdownRedis = promisify(redisClient.shutdown).bind(redisClient);
 
 describe('Basic', () => {
   it('should return a middleware function after passing (valid) options and db', () => {

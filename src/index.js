@@ -28,7 +28,6 @@ module.exports = (options, db) => {
     if (opts.header) {
       lookup = req.get(opts.header);
     }
-
     if (opts.limitMethods && opts.limitMethods.length > 0
       && !opts.limitMethods.includes(req.method)) {
       next();
@@ -40,10 +39,7 @@ module.exports = (options, db) => {
             remainingRequests = await decrAsync(`rate:${opts.limiterName}:${lookup}`);
           }
         } else {
-          const ret = await setAsync(`rate:${opts.limiterName}:${lookup}`, opts.requestCount, 'EX', opts.timeFrame);
-          if (!ret) {
-            res.sendStatus(500);
-          }
+          await setAsync(`rate:${opts.limiterName}:${lookup}`, opts.requestCount, 'EX', opts.timeFrame);
           remainingRequests = opts.requestCount;
         }
         if (remainingRequests > 0) {
@@ -54,7 +50,6 @@ module.exports = (options, db) => {
               if (opts.delayCallback && typeof opts.limitCallback === 'function') {
                 opts.delayCallback(req, res, next);
               }
-
               setTimeout(() => {
                 next();
               }, opts.delayTimeMs);
